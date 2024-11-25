@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { v4 as uuid4 } from "uuid";
 import DatePicker from "react-datepicker";
 import { format } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function FormProject({ onClose, onSave }) {
   const [formData, setFormData] = useState({
+    key: uuid4(),
     title: "",
     description: "",
     date: "",
@@ -18,7 +20,7 @@ export default function FormProject({ onClose, onSave }) {
   };
 
   const handleSave = () => {
-    const { title, description, date } = formData;
+    const { key, title, description, date } = formData;
 
     if (!title.trim() || !description.trim() || !date) {
       alert("Please fill out all fields");
@@ -28,6 +30,7 @@ export default function FormProject({ onClose, onSave }) {
     const formattedDate = date ? format(date, "dd.MM.yyyy") : null;
 
     console.log({
+      key,
       title,
       description,
       date: formattedDate,

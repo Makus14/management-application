@@ -1,5 +1,3 @@
-import { v4 as uuid4 } from "uuid";
-
 export default function Sidebar({ onOpen, projects }) {
   return (
     <aside className="w-1/3 px-8 py-16 bg-stone-900 text-stone-50 md:w-72 rounded-r-xl">
@@ -15,7 +13,7 @@ export default function Sidebar({ onOpen, projects }) {
       <ul className="mt-8">
         {projects.map((value) => (
           <button
-            key={uuid4()}
+            key={value.key}
             className="w-full text-left px-2 py-1 rounded-sm my-1 hover:text-stone-200 hover:bg-stone-800"
           >
             {value.title}

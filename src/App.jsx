@@ -1,19 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "./components/Sidebar/Sidebar";
 import FormProject from "./components/FormProject/FormProject";
 import Menu from "./components/Menu/Menu";
 import Project from "./components/ProjectComponents/Project";
 
 function App() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [formIsOpen, setFormIsOpen] = useState(false);
+  const [projectIsOpen, setProjectIsOpen] = useState(false);
   const [projects, setProjects] = useState([]);
+  const [selectedProject, setSelectedProject] = useState();
+
+  const openProject = (project) => {
+    setSelectedProject(project);
+    setProjectIsOpen(true);
+  };
+
+  const closeProject = () => {
+    setProjectIsOpen(false);
+    setSelectedProject(null);
+  };
 
   const openForm = () => {
-    setIsFormOpen(true);
+    setFormIsOpen(true);
+    setProjectIsOpen(false);
   };
 
   const closeForm = () => {
-    setIsFormOpen(false);
+    setFormIsOpen(false);
+  };
+
+  const handleUpdateProject = (updatedProject) => {
+    setProjects((prevProjects) =>
+      prevProjects.map((project) =>
+        project.key === updatedProject.key ? updatedProject : project
+      )
+    );
+    setSelectedProject(updatedProject);
   };
 
   const handleSaveProject = (newProject) => {
@@ -21,14 +43,34 @@ function App() {
     closeForm();
   };
 
+  const handleDeleteProject = (projectToDelete) => {
+    setProjects((prevProjects) =>
+      prevProjects.filter((project) => project.key !== projectToDelete.key)
+    );
+    closeProject();
+  };
+
   return (
     <main className="h-screen my-8 flex gap-8">
-      <Sidebar onOpen={openForm} projects={projects} />
-      {!isFormOpen ? (
-        // <Menu onOpen={openForm} />
-        <Project />
+      <Sidebar
+        onOpenForm={openForm}
+        onOpenProject={openProject}
+        setSelectedProject={setSelectedProject}
+        projects={projects}
+      />
+      {!projectIsOpen ? (
+        !formIsOpen ? (
+          <Menu onOpen={openForm} />
+        ) : (
+          <FormProject onCloseForm={closeForm} onSave={handleSaveProject} />
+        )
       ) : (
-        <FormProject onClose={closeForm} onSave={handleSaveProject} />
+        <Project
+          onCloseProject={closeProject}
+          selectedProject={selectedProject}
+          onUpdateProject={handleUpdateProject}
+          onDeleteProject={handleDeleteProject}
+        />
       )}
     </main>
   );

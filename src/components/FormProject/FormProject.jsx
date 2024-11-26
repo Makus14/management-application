@@ -4,12 +4,13 @@ import DatePicker from "react-datepicker";
 import { format } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
 
-export default function FormProject({ onClose, onSave }) {
+export default function FormProject({ onCloseForm, onSave }) {
   const [formData, setFormData] = useState({
     key: uuid4(),
     title: "",
     description: "",
-    date: "",
+    date: null,
+    tasks: [],
   });
 
   const handleChange = (field, value) => {
@@ -20,25 +21,18 @@ export default function FormProject({ onClose, onSave }) {
   };
 
   const handleSave = () => {
-    const { key, title, description, date } = formData;
+    const { key, title, description, date, tasks } = formData;
 
     if (!title.trim() || !description.trim() || !date) {
       alert("Please fill out all fields");
       return;
     }
 
-    const formattedDate = date ? format(date, "dd.MM.yyyy") : null;
-
-    console.log({
-      key,
-      title,
-      description,
-      date: formattedDate,
-    });
+    // console.log(formData);
 
     onSave(formData);
 
-    onClose();
+    onCloseForm();
   };
 
   return (
@@ -46,7 +40,7 @@ export default function FormProject({ onClose, onSave }) {
       <menu className="flex items-center justify-end gap-4 my-4">
         <button
           type="button"
-          onClick={onClose}
+          onClick={onCloseForm}
           className="text-stone-800 hover:text-stone-950"
         >
           Cancel

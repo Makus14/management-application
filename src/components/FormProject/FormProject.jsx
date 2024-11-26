@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { v4 as uuid4 } from "uuid";
 import DatePicker from "react-datepicker";
-import { format } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function FormProject({ onCloseForm, onSave }) {
@@ -28,10 +27,7 @@ export default function FormProject({ onCloseForm, onSave }) {
       return;
     }
 
-    // console.log(formData);
-
     onSave(formData);
-
     onCloseForm();
   };
 

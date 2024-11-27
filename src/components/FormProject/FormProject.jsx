@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { v4 as uuid4 } from "uuid";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useProjectContext } from "../ProjectContext.jsx";
 
-export default function FormProject({ onCloseForm, onSave }) {
+export default function FormProject({ onCloseForm }) {
+  const { addProject } = useProjectContext();
   const [formData, setFormData] = useState({
     key: uuid4(),
     title: "",
@@ -20,14 +22,14 @@ export default function FormProject({ onCloseForm, onSave }) {
   };
 
   const handleSave = () => {
-    const { key, title, description, date, tasks } = formData;
+    const { title, description, date } = formData;
 
     if (!title.trim() || !description.trim() || !date) {
       alert("Please fill out all fields");
       return;
     }
 
-    onSave(formData);
+    addProject(formData);
     onCloseForm();
   };
 

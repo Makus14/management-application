@@ -1,9 +1,8 @@
-export default function Sidebar({
-  onOpenForm,
-  onOpenProject,
-  projects,
-  setSelectedProject,
-}) {
+import { useProjectContext } from "../ProjectContext";
+
+export default function Sidebar({ onOpenForm, onOpenProject }) {
+  const { projects, setSelected } = useProjectContext();
+
   return (
     <aside className="w-1/3 px-8 py-16 bg-stone-900 text-stone-50 md:w-72 rounded-r-xl">
       <h2 className="mb-8 font-bold uppercase md:text-xl text-stone-200">
@@ -20,7 +19,7 @@ export default function Sidebar({
           <div key={value.key}>
             <button
               onClick={() => {
-                setSelectedProject(value);
+                setSelected(value);
                 onOpenProject(value);
               }}
               className="w-full text-left px-2 py-1 rounded-sm my-1 hover:text-stone-200 hover:bg-stone-800"

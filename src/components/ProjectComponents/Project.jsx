@@ -1,11 +1,9 @@
 import { format } from "date-fns";
 import { useState } from "react";
+import { useProjectContext } from "../ProjectContext";
 
-export default function Project({
-  selectedProject,
-  onUpdateProject,
-  onDeleteProject,
-}) {
+export default function Project() {
+  const { selectedProject, updateProject, deleteProject } = useProjectContext();
   const [newTask, setNewTask] = useState("");
 
   if (!selectedProject) {
@@ -15,14 +13,14 @@ export default function Project({
   const handleAddTask = () => {
     if (newTask.trim()) {
       const updatedTasks = [...(selectedProject.tasks || []), newTask.trim()];
-      onUpdateProject({ ...selectedProject, tasks: updatedTasks });
+      updateProject({ ...selectedProject, tasks: updatedTasks });
       setNewTask("");
     }
   };
 
   const handleRemoveTask = (index) => {
     const updatedTasks = selectedProject.tasks.filter((_, i) => i !== index);
-    onUpdateProject({ ...selectedProject, tasks: updatedTasks });
+    updateProject({ ...selectedProject, tasks: updatedTasks });
   };
 
   const handleChange = (event) => {
@@ -57,7 +55,7 @@ export default function Project({
           {selectedProject.title}
         </h1>
         <button
-          onClick={() => onDeleteProject(selectedProject)}
+          onClick={() => deleteProject(selectedProject)}
           className="text-stone-700 hover:text-red-500"
         >
           Delete

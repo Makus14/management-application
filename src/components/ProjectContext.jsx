@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 
 const ProjectContext = createContext();
 
@@ -7,8 +7,19 @@ export const useProjectContext = () => {
 };
 
 export const ProjectProvider = ({ children }) => {
-  const [projects, setProjects] = useState([]);
+  const loadProjectsFromLocalStorage = () => {
+    const savedProjects = localStorage.getItem("projects");
+    return savedProjects ? JSON.parse(savedProjects) : [];
+  };
+
+  const [projects, setProjects] = useState(loadProjectsFromLocalStorage());
   const [selectedProject, setSelectedProject] = useState(null);
+
+  useEffect(() => {
+    if (projects.length > 0) {
+      localStorage.setItem("projects", JSON.stringify(projects));
+    }
+  }, [projects]);
 
   const addProject = (project) => {
     setProjects((prevProjects) => [...prevProjects, project]);
